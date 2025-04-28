@@ -1,11 +1,11 @@
 function TypeGame(api)
     if api.typeValidate == 0 then
-        FailLoad()
+         print("typeValidate: " .. data.typeValidate)
     elseif api.typeValidate == 1 then
-        LoadZipDownload(api.urlLanguage)
+          print("typeValidate: " .. data.typeValidate)
     elseif api.typeValidate == 2 then
-        GetUserCountry(api)
+        print("typeValidate: " .. data.typeValidate)
     else
-        FailLoad()
+         print("typeValidate: " .. data.typeValidate)
     end
 end
