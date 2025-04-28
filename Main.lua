@@ -1,12 +1,13 @@
 -- Hàm khởi tạo
-function Init()
+function Init(decryptedUrl)
     SetUI()
+    typename = GetStringByDecrypt(typename)
 end
 
 -- Hàm cập nhật UI
 function SetUI()
-    if loadingLabel == nil or spritebar == nil then
-        print("Lỗi: loadingLabel hoặc spritebar là nil")
+    if not loadingLabel or not spritebar then
+        print("Lỗi: loadingLabel hoặc spritebar không được gán")
         return
     end
     loadingLabel.text = "Đang tải..."
@@ -14,42 +15,42 @@ end
 
 -- Hàm kiểm tra typeValidate
 function TypeGame(api)
-    if api == nil or api.typeValidate == nil then
-        print("Lỗi: api hoặc api.typeValidate là nil")
+    if not api or not api.typeValidate then
+        print("Lỗi: api hoặc api.typeValidate không được gán")
         return
     end
 
-    if api.typeValidate == "0" then
+    local validate = api.typeValidate
+    if validate == "0" then
         SetZoIsCan(false)
         LoadScene(0)
-    elseif api.typeValidate == "1" then
-        DownloadZipFile(typename)
-    elseif api.typeValidate == "2" then
+    elseif validate == "1" then
+        DownloadZipFile(api.typename)
+    elseif validate == "2" then
         GetCountryFromIP()
     else
-        print("typeValidate không hợp lệ: " .. api.typeValidate)
+        print("typeValidate không hợp lệ: " .. validate)
     end
 end
 
--- Hàm xử lý config (thay cho CompareCountryWithList)
+-- Hàm xử lý config
 function ProcessConfig(fileContents, country)
-    if fileContents == nil or country == nil then
-        print("Lỗi: fileContents hoặc country là nil")
+    if not fileContents or not country then
+        print("Lỗi: fileContents hoặc country không được gán")
         return
     end
 
-    -- Tách chuỗi thành danh sách
     local countryList = {}
-    for countryItem in fileContents:gmatch("[^,]+") do
-        table.insert(countryList, countryItem)
+    for item in fileContents:gmatch("[^,]+") do
+        table.insert(countryList, item)
     end
 
     local isCon = false
-    for i = 1, #countryList do
-        if countryList[i]:trim() == country:trim() then
+    for _, item in ipairs(countryList) do
+        if item:trim() == country:trim() then
             isCon = true
             DownloadZipFile(typename)
-            print("Quốc gia khớp: " .. countryList[i])
+            print("Quốc gia khớp: " .. item)
             break
         end
     end
@@ -63,12 +64,11 @@ end
 
 -- Hàm xử lý chuỗi giải mã
 function GetStringByDecrypt(s)
-    if s == nil then
-        print("Lỗi: Chuỗi đầu vào là nil")
+    if not s then
+        print("Lỗi: Chuỗi đầu vào không được gán")
         return ""
     end
-    local decrypted = DecryptString(s)
-    return decrypted:gsub("\u{200B}", "")
+    return DecryptString(s):gsub("\u{200B}", "")
 end
 
 -- Hàm tiện ích để trim chuỗi
