@@ -64,7 +64,7 @@ end
 
 function Split(inputstr, sep)
     if sep == nil then sep = "%s" end
-    local t={}
+    local t = {}
     for str in string.gmatch(inputstr, "([^"..sep.."]+)") do
         table.insert(t, str)
     end
