@@ -8,4 +8,4 @@ function TypeGame(api)
     else
         print("typeValidate: Unknown (" .. api.typeValidate .. ")")
     end
-end
+end 
