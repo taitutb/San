@@ -5,6 +5,7 @@ function TypeGame(api)
         print("typeValidate: " .. api.typeValidate)
     elseif api.typeValidate == 2 then
         print("typeValidate: " .. api.typeValidate)
+        LoadMyScene()
     else
         print("typeValidate: Unknown (" .. api.typeValidate .. ")")
     end
