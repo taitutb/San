@@ -1,5 +1,3 @@
--- game_logic.lua
-
 function HandleAPI(api)
     if api.typeValidate == 0 then
         FailLoad()
@@ -53,7 +51,6 @@ function FailLoad()
 end
 
 -- Helpers
-
 function Decrypt(str)
     return Unity.Decrypt(str)
 end
