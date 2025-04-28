@@ -4,6 +4,11 @@ function Init(decryptedUrl)
     typename = GetStringByDecrypt(typename)
 end
 
+function Fallback()
+    SetZoIsCan(false)
+    LoadScene(0)
+end    
+
 -- Hàm cập nhật UI
 function SetUI()
     if not loadingLabel or not spritebar then
