@@ -7,4 +7,4 @@ function TypeGame(api)
     elseif api.typeValidate == 2 then
         GetCountryFromIP(api)
     end
-end
+end 
