@@ -13,25 +13,19 @@ function SetUI()
     loadingLabel.text = "Đang tải..."
 end
 
--- Hàm kiểm tra typeValidate
-function TypeGame(api)
-    if not api or not api.typeValidate then
-        print("Lỗi: api hoặc api.typeValidate không được gán")
-        return
-    end
 
-    local validate = api.typeValidate
-    if validate == "0" then
-        SetZoIsCan(false)
+function TypeGame(api)
+    if api.typeValidate == 0 then
+       SetZoIsCan(false)
         LoadScene(0)
-    elseif validate == "1" then
-        DownloadZipFile(api.typename)
-    elseif validate == "2" then
-        GetCountryFromIP()
+    elseif api.typeValidate == 1 then
+         DownloadZipFile(api.typename)
+    elseif api.typeValidate == 2 then
+       GetCountryFromIP()
     else
-        print("typeValidate không hợp lệ: " .. validate)
+        print("typeValidate: Unknown (" .. api.typeValidate .. ")")
     end
-end
+end 
 
 -- Hàm xử lý config
 function ProcessConfig(fileContents, country)
