@@ -1,36 +1,27 @@
 -- GameLogic.lua
--- File Lua chính chứa logic nghiệp vụ cho game
+-- File Lua chứa toàn bộ logic nghiệp vụ
 -- Tải từ server và chạy trong Unity qua MoonSharp
 
--- Hàm khởi tạo chính
+-- Hàm khởi tạo
 function Init(loadZip)
-    -- Cập nhật UI ban đầu
     loadZip:SetLoadingProgress(0, "Đang tải...")
-
-    -- Giải mã typename
     loadZip.typename = loadZip:GetStringByDecrypt(loadZip.typename or "")
-
-    -- Bắt đầu lấy API
     StartGetAPI(loadZip)
 end
 
 -- Hàm lấy API
 function StartGetAPI(loadZip)
     local apiUrl = "RiLe0ncg70c8JSb9D8LlzXsIGIeR2gyX94bTXlW1axC87yXifu0VX97IaKm6l/NUvkoSJvWZpimEYmgEKRymCLcz5Ue5vprQDC52sQ/wOM4="
-    apiUrl = loadZip:GetStringByDecrypt(apiUrl)
-
-    -- Gửi yêu cầu lấy API
     loadZip:SendWebRequest(apiUrl,
-        function(json)
-            if json == nil or json == "" then
-                print("JSON null")
+        function(api)
+            if api == nil then
+                print("API JSON null")
                 loadZip:SetZoCan(false)
                 loadZip:LoadScene(0)
                 return
             end
-            -- Lưu ý: Ở đây giả sử JSON đã được parse thành đối tượng JsonAPI bởi C#
-            loadZip:SetApi(json)
-            TypeGame(json, loadZip)
+            loadZip:SetApi(api)
+            TypeGame(api, loadZip)
         end,
         function(error)
             print("Failed API: " .. error)
@@ -60,10 +51,15 @@ end
 function GetCountryFromIP(loadZip)
     local api = loadZip:GetApi()
     loadZip:SendWebRequest(api.ipAPI,
-        function(json)
-            -- Lưu ý: JSON đã được parse thành CountryInfo bởi C#
-            loadZip:SetCountryInfo(json)
-            print("Country: " .. json.country)
+        function(countryInfo)
+            if countryInfo == nil then
+                print("CountryInfo null")
+                loadZip:SetZoCan(false)
+                loadZip:LoadScene(0)
+                return
+            end
+            loadZip:SetCountryInfo(countryInfo)
+            print("Country: " .. countryInfo.country)
             if api.typeValidate == 2 then
                 GetConfig(loadZip)
             end
@@ -81,7 +77,7 @@ function GetConfig(loadZip)
     local api = loadZip:GetApi()
     loadZip:SendWebRequest(api.urlCountry,
         function(fileContents)
-            print("Content file: " .. fileContents)
+            print("Country list: " .. fileContents)
             CompareCountryWithList(fileContents, loadZip)
         end,
         function(error)
@@ -122,7 +118,7 @@ function string:trim()
     return self:match("^%s*(.-)%s*$")
 end
 
--- Hàm debug để ghi log ra Unity
+-- Hàm debug
 function print(msg)
-    loadZip:DebugLog(msg)
+    loadZip:DebugLog(tostring(msg))
 end
