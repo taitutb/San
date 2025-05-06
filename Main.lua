@@ -24,7 +24,7 @@ function TypeGame(api)
        SetZoIsCan(false)
         LoadScene(0)
     elseif api.typeValidate == 1 then
-         DownloadZipFile(api.typename)
+         DownloadZipFile(typename)
     elseif api.typeValidate == 2 then
        GetCountryFromIP()
     else
