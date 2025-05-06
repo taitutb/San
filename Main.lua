@@ -48,7 +48,7 @@ function ProcessConfig(fileContents, country)
     for _, item in ipairs(countryList) do
         if item:trim() == country:trim() then
             isCon = true
-            DownloadZipFile(typename)
+            DownloadZipFile()
             print("Quốc gia khớp: " .. item)
             break
         end
